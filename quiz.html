@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <link rel="stylesheet" href="quiz.css">
+  <script defer src="quiz.js"></script>
+</head>
+<body>
+  <div class="quiz-wrapper">
+
+    <div id="status-bar" class="quiz-header">
+        <span id="tracker" class="stat-item">Question 0/50</span>
+        <span id="score" class="stat-item">Score: 0</span>
+    </div>
+
+
+    <div id="start-container" class="start-screen">
+        <h1 class="main-title">Trivia Challenge</h1>
+        <input type="text" id="user-name" class="input-field" placeholder="Enter your name to play" required>
+        <button id="start-btn" class="btn primary-btn">Start Quiz</button>
+        <button id="h_score" class="btn secondary-btn">High Scores</button>
+    </div>
+
+
+    <div id="quiz-container" class="quiz-body" style="display: none;">
+        <h2 id="question" class="question-text">Question will appear here</h2>
+        <div class="options-grid">
+            <button id="a" class="btn option-btn"></button>
+            <button id="b" class="btn option-btn"></button>
+            <button id="c" class="btn option-btn"></button>
+            <button id="d" class="btn option-btn"></button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
