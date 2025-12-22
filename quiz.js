@@ -315,12 +315,16 @@ const question_array = [
         correct: "c" }
 ];
 
-function getRandomQuestion() {
-    return quizPool[Math.floor(Math.random() * quizPool.length)];
-}
-  let quizPool = [...question_array].sort(() => Math.random() - 0.5).slice(0, 10);
+let quizPool = [...question_array].sort(() => Math.random() - 0.5).slice(0, 10);
+
 function displayQuestion() {
-    currentQuestion = getRandomQuestion();
+    if (questionCount >= 10) {
+        finishQuiz();
+        return;
+    }
+
+    currentQuestion = quizPool[questionCount];
+    
     document.getElementById("question").innerText = currentQuestion.question;
     q1.innerText = currentQuestion.a;
     q2.innerText = currentQuestion.b;
@@ -328,7 +332,19 @@ function displayQuestion() {
     q4.innerText = currentQuestion.d;
 
     questionCount++;
-    tracker.innerText = `Question: ${questionCount}`;
+    tracker.innerText = `Question: ${questionCount} / 10`;
+}
+
+function finishQuiz() {
+    const quizContainer = document.getElementById('quiz-container');
+    quizContainer.innerHTML = `
+        <div style="text-align: center;">
+            <h2>Quiz Completed!</h2>
+            <p>Well done, ${nameInput.value}!</p>
+            <p style="font-size: 24px;">Total Score: <strong>${score}</strong></p>
+            <button onclick="location.reload()" style="padding: 10px;">Restart Quiz</button>
+        </div>
+    `;
 }
 
 function startQuiz() {
@@ -343,7 +359,6 @@ function startQuiz() {
         startBtn.innerText = "Quiz Started";
         document.getElementById('quiz-container').style.display = 'block'; 
         displayQuestion();
-        
     }
 }
 
