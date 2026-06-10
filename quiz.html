@@ -3,37 +3,122 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz App</title>
+  <title>Trivia Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="quiz.css">
-  <script defer src="quiz.js"></script>
 </head>
 <body>
-  <div class="quiz-wrapper">
 
-    <div id="status-bar" class="quiz-header">
-        <span id="tracker" class="stat-item">Question 0/50</span>
-        <span id="score" class="stat-item">Score: 0</span>
+  <!-- ── START SCREEN ── -->
+  <div id="start-screen" class="screen active">
+    <div class="brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">Trivia Challenge</span>
+    </div>
+    <h1 class="hero-title">How much do<br>you <em>really</em> know?</h1>
+    <p class="hero-sub">10 random questions. 10 points each. No second chances.</p>
+
+    <div class="start-card">
+      <label class="input-label" for="user-name">Your name</label>
+      <input type="text" id="user-name" class="name-input" placeholder="e.g. Ibrahim" autocomplete="off" maxlength="24">
+      <button id="start-btn" class="btn btn-primary">Let's Go →</button>
+      <button id="h_score" class="btn btn-ghost">🏆 Leaderboard</button>
+    </div>
+  </div>
+
+  <!-- ── QUIZ SCREEN ── -->
+  <div id="quiz-screen" class="screen">
+
+    <!-- header -->
+    <div class="quiz-header">
+      <div class="q-meta">
+        <span id="tracker" class="q-counter">1 / 10</span>
+        <span id="player-tag" class="player-tag"></span>
+      </div>
+      <div id="score-badge" class="score-badge">0 pts</div>
     </div>
 
-
-    <div id="start-container" class="start-screen">
-        <h1 class="main-title">Trivia Challenge</h1>
-        <input type="text" id="user-name" class="input-field" placeholder="Enter your name to play" required>
-        <button id="start-btn" class="btn primary-btn">Start Quiz</button>
-        <button id="h_score" class="btn secondary-btn">High Scores</button>
+    <!-- progress bar -->
+    <div class="progress-track">
+      <div id="progress-fill" class="progress-fill"></div>
     </div>
 
-
-    <div id="quiz-container" class="quiz-body" style="display: none;">
-        <h2 id="question" class="question-text">Question will appear here</h2>
-        <div class="options-grid">
-            <button id="a" class="btn option-btn"></button>
-            <button id="b" class="btn option-btn"></button>
-            <button id="c" class="btn option-btn"></button>
-            <button id="d" class="btn option-btn"></button>
-        </div>
+    <!-- timer ring -->
+    <div class="timer-wrap">
+      <svg class="timer-ring" viewBox="0 0 64 64">
+        <circle class="ring-bg"   cx="32" cy="32" r="27"/>
+        <circle id="ring-arc" class="ring-arc" cx="32" cy="32" r="27"/>
+      </svg>
+      <span id="timer-num" class="timer-num">15</span>
     </div>
-</div>
 
+    <!-- question -->
+    <div class="question-wrap">
+      <p class="q-label">Question</p>
+      <h2 id="question" class="question-text">Loading…</h2>
+    </div>
+
+    <!-- options -->
+    <div class="options-grid">
+      <button id="a" class="option-btn"><span class="opt-letter">A</span><span class="opt-text"></span></button>
+      <button id="b" class="option-btn"><span class="opt-letter">B</span><span class="opt-text"></span></button>
+      <button id="c" class="option-btn"><span class="opt-letter">C</span><span class="opt-text"></span></button>
+      <button id="d" class="option-btn"><span class="opt-letter">D</span><span class="opt-text"></span></button>
+    </div>
+
+    <!-- streak indicator -->
+    <div id="streak-bar" class="streak-bar"></div>
+  </div>
+
+  <!-- ── RESULT SCREEN ── -->
+  <div id="result-screen" class="screen">
+    <div id="result-emoji" class="result-emoji">🎉</div>
+    <h2 id="result-title" class="result-title">Great job!</h2>
+    <p id="result-name"  class="result-name"></p>
+
+    <div class="score-ring-wrap">
+      <svg class="score-ring" viewBox="0 0 120 120">
+        <circle class="sr-bg"  cx="60" cy="60" r="50"/>
+        <circle id="sr-arc" class="sr-arc" cx="60" cy="60" r="50"/>
+      </svg>
+      <div class="score-inner">
+        <span id="final-score" class="final-num">0</span>
+        <span class="final-label">/ 100</span>
+      </div>
+    </div>
+
+    <div class="result-stats">
+      <div class="rs-item"><span id="rs-correct" class="rs-num">0</span><span class="rs-label">Correct</span></div>
+      <div class="rs-item"><span id="rs-wrong"   class="rs-num">0</span><span class="rs-label">Wrong</span></div>
+      <div class="rs-item"><span id="rs-streak"  class="rs-num">0</span><span class="rs-label">Best Streak</span></div>
+    </div>
+
+    <p id="result-msg" class="result-msg"></p>
+
+    <div class="result-actions">
+      <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+      <button id="leaderboard-btn" class="btn btn-ghost">🏆 Leaderboard</button>
+    </div>
+  </div>
+
+  <!-- ── LEADERBOARD MODAL ── -->
+  <div id="lb-modal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>🏆 Leaderboard</h3>
+        <button id="lb-close" class="modal-close">✕</button>
+      </div>
+      <div id="lb-list" class="lb-list">
+        <p class="lb-empty">No scores yet. Be the first!</p>
+      </div>
+      <button id="lb-clear" class="btn btn-ghost" style="margin-top:14px;width:100%;font-size:.8rem;">Clear scores</button>
+    </div>
+  </div>
+
+  <!-- feedback flash -->
+  <div id="feedback" class="feedback-flash"></div>
+
+  <script src="quiz.js"></script>
 </body>
 </html>
